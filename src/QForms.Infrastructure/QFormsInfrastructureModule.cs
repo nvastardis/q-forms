@@ -7,7 +7,7 @@ namespace QForms;
 
 public static class QFormsInfrastructureModule
 {
-    public static void ConfigureInfrastructure(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false)
+    public static void ConfigureInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         ConfigureDatabaseConnection(services, configuration);
         ConfigureIdentity(services, configuration);
@@ -15,8 +15,10 @@ public static class QFormsInfrastructureModule
 
     private static void ConfigureDatabaseConnection(IServiceCollection services, IConfiguration configuration)
     {
-        var dbConnectionString = configuration.GetConnectionString(QFormsInfrastructureConsts.DbConnectionStringKey) ??
-                                 throw new Exception("Default connection string missing!");
+        var dbConnectionString = 
+            configuration.GetConnectionString(QFormsInfrastructureConsts.DbConnectionStringKey)
+                ?? throw new Exception("Default connection string missing!");
+
         services.AddDataProtection();
         services.AddDbContext<QFormsDbContext>(options =>
         {
@@ -30,8 +32,12 @@ public static class QFormsInfrastructureModule
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<QFormsDbContext>()
             .AddSignInManager()
-            .AddDefaultTokenProviders();
+            .AddDefaultTokenProviders()
+            .AddApiEndpoints();
         
+        services.Configure<IdentityEndpointOptions>(
+            configuration.GetSection("IdentityEndpointOptions"));
+
         services.Configure<IdentityOptions>(options =>
         {
             // Password settings.

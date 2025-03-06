@@ -31,7 +31,7 @@ public class Program
                     });
                     options.AddConfiguration(configuration.GetSection("Logging"));
                 });
-                services.ConfigureInfrastructure(configuration, currentEnvironment == "Development");
+                services.ConfigureInfrastructure(configuration);
                 services.AddTransient<QFormsDataSeeder>();
                 services.AddTransient<QFormsDbSeedingJob>();
                 services.AddTransient<QFormsDbMigrationJob>();

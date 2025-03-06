@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using QForms;
 using QForms.Blazor.Components;
 using QForms.Blazor.Components.Account;
@@ -61,6 +62,7 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(typeof(QForms.Blazor.Client._Imports).Assembly);
 
 // Add additional endpoints required by the Identity /Account Razor components.
-app.MapAdditionalIdentityEndpoints();
+app.MapIdentityApi<ApplicationUser>(
+    app.Services.GetRequiredService<IOptions<IdentityEndpointOptions>>());
 
 app.Run();
