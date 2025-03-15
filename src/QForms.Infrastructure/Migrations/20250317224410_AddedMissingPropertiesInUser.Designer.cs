@@ -11,8 +11,8 @@ using QForms.EntityFrameworkCore;
 namespace QForms.Migrations
 {
     [DbContext(typeof(QFormsDbContext))]
-    [Migration("20250222171216_Initial")]
-    partial class Initial
+    [Migration("20250317224410_AddedMissingPropertiesInUser")]
+    partial class AddedMissingPropertiesInUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,6 +172,9 @@ namespace QForms.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -190,6 +193,9 @@ namespace QForms.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Surname")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("TwoFactorEnabled")

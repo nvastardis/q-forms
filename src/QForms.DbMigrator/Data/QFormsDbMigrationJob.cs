@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using QForms.Database;
+using QForms.EntityFrameworkCore;
 
 namespace QForms.DbMigrator.Data;
 

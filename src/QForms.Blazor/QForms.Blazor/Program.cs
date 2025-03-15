@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using QForms;
 using QForms.Blazor.Components;
 using QForms.Blazor.Components.Account;
@@ -33,7 +32,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+// Configure Infrastructure and Api
 builder.Services.ConfigureInfrastructure(builder.Configuration);
+builder.Services.ConfigureApi(builder.Configuration);
 
 var app = builder.Build();
 
@@ -61,8 +62,7 @@ app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(QForms.Blazor.Client._Imports).Assembly);
 
-// Add additional endpoints required by the Identity /Account Razor components.
-app.MapIdentityApi<ApplicationUser>(
-    app.Services.GetRequiredService<IOptions<IdentityEndpointOptions>>());
+// Add additional endpoints required by Identity and other services.
+app.ConfigureEndpoints(app.Services);
 
 app.Run();

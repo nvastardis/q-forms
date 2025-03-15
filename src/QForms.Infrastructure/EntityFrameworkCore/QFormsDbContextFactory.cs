@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace QForms.Database;
+namespace QForms.EntityFrameworkCore;
 
 public class QFormsDbContextFactory: IDesignTimeDbContextFactory<QFormsDbContext>
 {
@@ -19,7 +19,8 @@ public class QFormsDbContextFactory: IDesignTimeDbContextFactory<QFormsDbContext
     {
         var builder = new ConfigurationBuilder()
             .SetBasePath(Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "../QForms.DbMigrator/")))
-            .AddJsonFile("appsettings.Development.json", optional: false);
+            .AddJsonFile("appsettings.Development.json", optional: false)
+            .AddUserSecrets("8e6992ca-654b-48ea-af67-25a264e6eecc");
 
         return builder.Build();
     }

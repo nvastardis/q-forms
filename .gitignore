@@ -6,6 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.sln.DotSettings.user
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -265,5 +266,4 @@ tempkey.rsa
 tempkey.jwk
 
 # Database files
-*.db-shm
-*.db-wal
+etc/Database

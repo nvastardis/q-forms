@@ -1,29 +1,14 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
-using QForms.Identity;
 
-namespace QForms.Blazor.Components.Account;
+namespace QForms.Identity;
 
 internal static class IdentityComponentsEndpointRouteBuilderExtensions
 {
-    // These endpoints are required by the Identity Razor components defined in the /Components/Account/Pages directory of this project.
-    public static IEndpointConventionBuilder MapAdditionalIdentityEndpoints(this IEndpointRouteBuilder endpoints)
-    {
-        ArgumentNullException.ThrowIfNull(endpoints);
-
-        var accountGroup = endpoints.MapGroup("/Account");
-
-        accountGroup.MapPost("/Logout", async (
-            [FromServices] SignInManager<ApplicationUser> signInManager,
-            [FromForm] string returnUrl) =>
-        {
-            await signInManager.SignOutAsync();
-            return TypedResults.LocalRedirect($"~/{returnUrl}");
-        });
-        return accountGroup;
-    }
-    
     /// <summary>
     /// Configures the Identity API based on the IdentityEndpointOptions 
     /// </summary>
@@ -39,20 +24,17 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
     {
         var identityEndpoints = endpoints.MapIdentityApi<TUser>();
         var endpointOptions = options.Value;
+
+        endpoints.MapAdditionalIdentityEndpoints();
+
         if (!endpointOptions.IncludeRegister)
         {
             identityEndpoints = identityEndpoints.FilterIdentityRegisterApi();
         }
-        
         if (!endpointOptions.IncludeLogin)
         {
             identityEndpoints = identityEndpoints.FilterIdentityLoginApi();
         }
-        else
-        {
-            endpoints.MapAdditionalIdentityEndpoints();
-        }
-
         if (!endpointOptions.IncludeRefresh)
         {
             identityEndpoints = identityEndpoints.FilterIdentityRefreshApi();
@@ -61,6 +43,22 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
         return identityEndpoints;
     }
 
+    // These endpoints are required by the Identity Razor components
+    private static void MapAdditionalIdentityEndpoints(this IEndpointRouteBuilder endpoints)
+    {
+        ArgumentNullException.ThrowIfNull(endpoints);
+
+        var accountGroup = endpoints.MapGroup("/Account");
+
+        accountGroup.MapPost("/Logout", async (
+            [FromServices] SignInManager<ApplicationUser> signInManager,
+            [FromForm] string returnUrl) =>
+        {
+            await signInManager.SignOutAsync();
+            return TypedResults.LocalRedirect($"~/{returnUrl}");
+        });
+    }
+    
     /// <summary>
     /// Filters out the Registration API endpoints
     /// </summary>

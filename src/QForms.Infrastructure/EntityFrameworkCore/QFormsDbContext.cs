@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using QForms.Identity;
 
-namespace QForms.Database;
+namespace QForms.EntityFrameworkCore;
 
 public class QFormsDbContext: IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {

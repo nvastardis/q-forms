@@ -1,18 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
-        <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <OutputType>Library</OutputType>
+        <Nullable>enable</Nullable>
         <RootNamespace>QForms</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="Properties\launchSettings.json" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\QForms.Application.Contracts\QForms.Application.Contracts.csproj" />
+      <ProjectReference Include="..\QForms.Application\QForms.Application.csproj" />
       <ProjectReference Include="..\QForms.Domain.Shared\QForms.Domain.Shared.csproj" />
     </ItemGroup>
 
