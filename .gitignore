@@ -267,3 +267,4 @@ tempkey.jwk
 
 # Database files
 etc/Database
+etc/Database/QForms.db

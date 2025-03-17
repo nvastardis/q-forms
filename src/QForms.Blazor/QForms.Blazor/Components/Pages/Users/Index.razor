@@ -1,0 +1,58 @@
+﻿@page "/users"
+@using QForms.Identity
+@inject IIdentityUserAppService AppService
+@attribute [StreamRendering]
+
+<PageTitle>Users</PageTitle>
+
+<h1>Users</h1>
+
+<p>This component displays a table with user data.</p>
+
+@if (_isInitialized)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Actions</th>
+            <th>UserName</th>
+            <th aria-label="Name">Name</th>
+            <th aria-label="Surname">Surname</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in _itemList)
+        {
+            <tr>
+                <td>
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Actions
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">View</a>
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                    </div>
+                </td>
+                <td>@user.UserName</td>
+                <td>@user.Name</td>
+                <td>@user.Surname</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private bool _isInitialized;
+    private IReadOnlyList<IdentityUserLookUpDto> _itemList = new List<IdentityUserLookUpDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _itemList = await AppService.GetListAsync();
+        _isInitialized = true;
+    }
+}
